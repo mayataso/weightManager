@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class WeightCard extends StatelessWidget {
-  const WeightCard(this.records, this.index);
+  const WeightCard(this.notifier, this.records, this.index);
 
+  final notifier;
   final records;
   final index;
 
@@ -35,13 +36,13 @@ class WeightCard extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.only(left: 12),
-            width: 100,
+            width: 120,
             child: Text(
               '${records[index]['weight']}Kg',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
             ),
           ),
-          Expanded(
+          Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,6 +87,32 @@ class WeightCard extends StatelessWidget {
               ],
             ),
           ),
+          Expanded(
+            child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: 40,
+                child: IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    notifier.popUpForm(index, records[index]['weight'], records[index]['comment']);
+                  },
+                ),
+              ),
+              SizedBox(
+                width: 40,
+                child: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    // ガワだけ作成
+                    notifier.popUpForm();
+                  },
+                ),
+              ),
+            ],
+          )
+          )
         ],
       ),
     );

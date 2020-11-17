@@ -42,7 +42,13 @@ class MyPageNotifier extends StateNotifier<MyPageState> with LocatorMixin {
   }
 
   // ポップアップ処理
-  void popUpForm() {
+  // 新規作成時はindex = -1, 編集時は編集する要素のindexが引数となる
+  void popUpForm([int index = -1, String weight = "", String comment = ""]) {
+    print('${state.weight}, ${state.comment}');
+    // 初期値代入
+    state = state.copyWith(weight: weight);
+    state = state.copyWith(comment: comment);
+
     showDialog(
       context: context,
       builder: (context) {
@@ -64,6 +70,8 @@ class MyPageNotifier extends StateNotifier<MyPageState> with LocatorMixin {
                         hintText: '嘘つくなよ',
                         labelText: '今日の体重',
                       ),
+                      // 編集モード時、初期値を表示
+                      initialValue: state.weight,
                       onChanged: (value) {
                         //ここ
                         _saveWeight(value);
@@ -83,10 +91,9 @@ class MyPageNotifier extends StateNotifier<MyPageState> with LocatorMixin {
               width: 200,
               padding: EdgeInsets.only(left: 4),
               child: TextFormField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: '後悔先に立たず',
-                    labelText: '懺悔の一言'),
+                decoration: InputDecoration(border: OutlineInputBorder(), hintText: '後悔先に立たず', labelText: '懺悔の一言'),
+                // 編集モード時、初期値を表示
+                      initialValue: state.comment,
                 onChanged: (value) {
                   _saveComment(value);
                 },
@@ -96,9 +103,9 @@ class MyPageNotifier extends StateNotifier<MyPageState> with LocatorMixin {
               height: 20,
             ),
             InkWell(
-              child: RegisterButton(), 
+              child: RegisterButton(),
               onTap: () {
-                _register();
+                _register(index);
               },
             )
           ],
@@ -117,17 +124,32 @@ class MyPageNotifier extends StateNotifier<MyPageState> with LocatorMixin {
     state = state.copyWith(comment: value);
   }
 
-  void _register() {
+  void _register(int index) {
+    final dateTime = DateTime.now();
+    final day = '${dateTime.year}年${dateTime.month}月${dateTime.day}日';
     final formRecord = {
       'weight': state.weight,
       'comment': state.comment,
-      'day': DateTime.now().toString(),
+      'day': day,
     };
+
     print(formRecord);
     final newRecord = List<Map<String, String>>.from(state.record);
-    newRecord.add(formRecord);
+
+    // 新規作成時と編集時で操作を分岐
+    if (index == -1) {
+      newRecord.add(formRecord);
+    } else {
+      newRecord[index] = formRecord;
+    }
     state = state.copyWith(record: newRecord);
     print(state.record);
+
+    // 入力した値をリセット
+    state = state.copyWith(weight: "");
+    state = state.copyWith(comment: "");
+    print('${state.weight}, ${state.comment}');
+
     Navigator.pop(context);
   }
 }

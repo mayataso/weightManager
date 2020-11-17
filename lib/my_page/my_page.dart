@@ -43,7 +43,7 @@ class MyPage extends StatelessWidget {
                     return ListView.builder(
                       itemCount: records.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return WeightCard(records, index);
+                        return WeightCard(notifier, records, index);
                       },
                     );
                   },
