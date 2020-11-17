@@ -142,14 +142,25 @@ class MyPageNotifier extends StateNotifier<MyPageState> with LocatorMixin {
     } else {
       newRecord[index] = formRecord;
     }
-    state = state.copyWith(record: newRecord);
-    print(state.record);
+    _update(newRecord);
 
     // 入力した値をリセット
     state = state.copyWith(weight: "");
     state = state.copyWith(comment: "");
-    print('${state.weight}, ${state.comment}');
 
     Navigator.pop(context);
+  }
+
+  void deleteRecord(int index) {
+    final newRecord = List<Map<String, String>>.from(state.record);
+
+    newRecord.removeAt(index);
+
+    _update(newRecord);
+  }
+
+  // 変更したデータの反映
+  void _update(List<Map<String, String>> record) {
+    state = state.copyWith(record: record);
   }
 }

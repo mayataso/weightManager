@@ -106,7 +106,7 @@ class WeightCard extends StatelessWidget {
                   icon: Icon(Icons.delete),
                   onPressed: () {
                     // ガワだけ作成
-                    notifier.popUpForm();
+                    notifier.deleteRecord(index);
                   },
                 ),
               ),
