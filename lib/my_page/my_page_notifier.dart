@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:state_notifier/state_notifier.dart';
+import 'register_button.dart';
 
 part 'my_page_notifier.freezed.dart';
 
@@ -95,20 +96,7 @@ class MyPageNotifier extends StateNotifier<MyPageState> with LocatorMixin {
               height: 20,
             ),
             InkWell(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 40),
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  border: Border.all(color: Colors.blueAccent),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  '登録',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              child: RegisterButton(), 
               onTap: () {
                 _register();
               },
