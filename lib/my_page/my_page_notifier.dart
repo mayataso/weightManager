@@ -33,6 +33,21 @@ class MyPageNotifier extends StateNotifier<MyPageState> with LocatorMixin {
   @override
   void initState() {
     print('init');
+
+    // デバッグ用初期化
+    List<Map<String, String>> newRecord = [];
+    final dateTime = DateTime.now();
+    final day = '${dateTime.year}年${dateTime.month}月${dateTime.day}日';
+
+    for (int i = 0; i < 3; i++) {
+      final formRecord = {
+        'weight': '${66 + i}',
+        'comment': 'comment ${i + 1}',
+        'day': day,
+      };
+      newRecord.add(formRecord);
+    }
+    state = state.copyWith(record: newRecord);
   }
 
   void pushButton() {
@@ -93,7 +108,7 @@ class MyPageNotifier extends StateNotifier<MyPageState> with LocatorMixin {
               child: TextFormField(
                 decoration: InputDecoration(border: OutlineInputBorder(), hintText: '後悔先に立たず', labelText: '懺悔の一言'),
                 // 編集モード時、初期値を表示
-                      initialValue: state.comment,
+                initialValue: state.comment,
                 onChanged: (value) {
                   _saveComment(value);
                 },
@@ -153,9 +168,7 @@ class MyPageNotifier extends StateNotifier<MyPageState> with LocatorMixin {
 
   void deleteRecord(int index) {
     final newRecord = List<Map<String, String>>.from(state.record);
-
     newRecord.removeAt(index);
-
     _update(newRecord);
   }
 

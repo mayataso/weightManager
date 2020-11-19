@@ -17,7 +17,7 @@ class WeightCard extends StatelessWidget {
         vertical: 12,
       ),
       decoration: BoxDecoration(
-        color: Colors.cyan[300],
+        color: int.parse(records[index]['weight']) < 80 ? Colors.black12 : Colors.red[400],
         boxShadow: [
           BoxShadow(
             color: Colors.black26,
